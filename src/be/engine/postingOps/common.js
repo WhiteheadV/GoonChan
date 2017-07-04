@@ -2,7 +2,6 @@
 
 // handles operations common to user posting
 
-var base85 = require('base85');
 var fs = require('fs');
 var mongo = require('mongodb');
 var ObjectID = mongo.ObjectID;
