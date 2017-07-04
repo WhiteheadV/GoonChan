@@ -84,91 +84,65 @@ exports.loadDependencies = function() {
 
 };
 
-var greenTextFunction = function(match) {
-  return '<span class="greenText">' + match + '</span>';
-};
-var pinkTextFunction = function(match) {
-return '<span class="pinkText">' + match + '</span>';
-};
-var darkGreenTextFunction = function(match) {
-return '<span class="darkGreenText">' + match + '</span>';
-};
-var purpleTextFunction = function(match) {
-return '<span class="purpleText">' + match + '</span>';
-};
+var greenTextFunction = function(match) { return '<span class="greenText">' + match + '</span>'; };
+var brownTextFunction = function(match) { return '<span class="brownText">' + match + '</span>'; };
+var yellowTextFunction = function(match) { return '<span class="yellowText">' + match + '</span>'; };
+var pinkTextFunction = function(match) { return '<span class="pinkText">' + match + '</span>'; };
+var darkGreenTextFunction = function(match) { return '<span class="darkGreenText">' + match + '</span>'; };
+var purpleTextFunction = function(match) { return '<span class="purpleText">' + match + '</span>'; };
+var italicFunction = function(match) { return '<em>' + match.substring(2, match.length - 2) + '</em>'; };
+var boldFunction = function(match) { return '<strong>' + match.substring(3, match.length - 3) + '</strong>'; };
+var underlineFunction = function(match) { return '<u>' + match.substring(2, match.length - 2) + '</u>'; };
+var strikeFunction = function(match) { return '<s>' + match.substring(2, match.length - 2) + '</s>'; };
+
 var redTextFunction = function(match) {
   var content = match.substring(2, match.length - 2);
-
-  return '<span class="redText">' + content + '</span>';
+  
+  return '<span class="redText">' + content + '</span>'; 
 };
 var whiteTextFunction = function(match) {
-var content = match.substring(2, match.length - 2);
-return '<span class="whiteText">' + content + '</span>';
-};
-var blackTextFunction = function(match) {
-var content = match.substring(2, match. length - 2);
-return '<span class="blackText">' + content + '</span>';
-};
-var blueTextFunction = function(match) {
-var content = match.substring(2, match.length - 2);
-return '<span class="blueText">' + content + '</span>';
-};
-var rainbowFunction = function(match) {
-var content = match.substring(5, match.length - 6);
-return '<span class="rainbow">' + content + '</span>';
-};
-var shakeFunction = function(match) {
-var content = match.substring(7, match.length - 8);
-return '<span class="shake">' + content + '</span>';
-};
-var marqueeFunction = function(match) {
-var content = match.substring(9, match.length - 10);
-return '<marquee>' + content + '<marquee>';
-};
-var rainbowAltFuntion = function(match) {
-var content = match.substring(6, match.length - 7);
-return '<span class="rainbow">' + content + '</span>';
-};
-var autismFuntion = function(match) {
-var content = match.substring(8, match.length - 9);
-return '<span class="autism">' + content + '</span';
-};
-
-var italicFunction = function(match) {
-
-  return '<em>' + match.substring(2, match.length - 2) + '</em>';
-};
-
-var boldFunction = function(match) {
-  return '<strong>' + match.substring(3, match.length - 3) + '</strong>';
-};
-
-var underlineFunction = function(match) {
-  return '<u>' + match.substring(2, match.length - 2) + '</u>';
-};
-
-var strikeFunction = function(match) {
-  return '<s>' + match.substring(2, match.length - 2) + '</s>';
-};
-
-var spoilerFunction = function(match) {
-
-  var content = match.substring(9, match.length - 10);
-
-  return '<span class="spoiler">' + content + '</span>';
-};
-var rainbowFunction = function(match) {
-var content = match.substring(5, match.length - 6);
-return '<span class="rainbow">' + content + '</span>';
-};
-var flashFunction = function(match) {
-var content = match.substring(7, match.length - 8);
-return '<span class="flash">' + content + '</span>';
-};
-var altSpoilerFunction = function(match) {
-
   var content = match.substring(2, match.length - 2);
 
+  return '<span class="whiteText">' + content + '</span>';
+};
+var blackTextFunction = function(match) {
+  var content = match.substring(2, match. length - 2);
+  return '<span class="blackText">' + content + '</span>';
+};
+var blueTextFunction = function(match) {
+  var content = match.substring(2, match.length - 2);
+  return '<span class="blueText">' + content + '</span>';
+};
+var rainbowFunction = function(match) {
+  var content = match.substring(5, match.length - 6);
+  return '<span class="rainbow">' + content + '</span>';
+};
+var shakeFunction = function(match) {
+  var content = match.substring(7, match.length - 8);
+  return '<span class="shake">' + content + '</span>';
+};
+var marqueeFunction = function(match) {
+  var content = match.substring(9, match.length - 10);
+  return '<marquee>' + content + '<marquee>';
+};
+var rainbowAltFuntion = function(match) {
+  var content = match.substring(6, match.length - 7);
+  return '<span class="rainbow">' + content + '</span>';
+};
+var autismFuntion = function(match) {
+  var content = match.substring(8, match.length - 9);
+  return '<span class="autism">' + content + '</span';
+};
+var rainbowFunction = function(match) {
+  var content = match.substring(5, match.length - 6);
+  return '<span class="rainbow">' + content + '</span>';
+};
+var flashFunction = function(match) {
+  var content = match.substring(7, match.length - 8);
+  return '<span class="flash">' + content + '</span>';
+};
+var SpoilerFunction = function(match) {
+  var content = match.substring(2, match.length - 2);
   return '<span class="spoiler">' + content + '</span>';
 };
 
@@ -437,16 +411,18 @@ exports.processLine = function(split, replaceCode) {
   split = split.replace(/^>[^\&].*/g, greenTextFunction);
   split = split.replace(/^%[^\&].*/g, purpleTextFunction);
   split = split.replace(/^@[^\&].*/g, pinkTextFunction);
+  split = split.replace(/^![^\&].*/g, darkGreenTextFunction);
+  split = split.replace(/^$[^\&].*/g, brownTextFunction);
+  split = split.replace(/^&[^\&].*/g, yellowTextFunction);
   split = split.replace(/\=\=.+?\=\=/g, redTextFunction);
   split = split.replace(/\+\+.+?\+\+/g, blueTextFunction);
   split = split.replace(/\@\@.+?\@\@/g, whiteTextFunction);
   split = split.replace(/\#\#.+?\#\#/g, blackTextFunction);
-  split = split.replace(/^![^\&].*/g, darkGreenTextFunction);
   split = split.replace(/\'\'\'.+?\'\'\'/g, boldFunction);
   split = split.replace(/\'\'.+?\'\'/g, italicFunction);
   split = split.replace(/\_\_.+?\_\_/g, underlineFunction);
   split = split.replace(/\~\~.+?\~\~/g, strikeFunction);
-  split = split.replace(/\*\*.+?\*\*/g, altSpoilerFunction);
+  split = split.replace(/\*\*.+?\*\*/g, SpoilerFunction);
   split = split.replace(/\[aa\]/g, '<span class="aa">');
   split = split.replace(/\[\/aa\]/g, '</span>');
   split = split.replace(/\[gay\].+?\[\/gay\]/g, rainbowFunction);
