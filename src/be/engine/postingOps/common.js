@@ -2,6 +2,7 @@
 
 // handles operations common to user posting
 
+var base85 = require('base85');
 var fs = require('fs');
 var mongo = require('mongodb');
 var ObjectID = mongo.ObjectID;
@@ -87,11 +88,51 @@ exports.loadDependencies = function() {
 var greenTextFunction = function(match) {
   return '<span class="greenText">' + match + '</span>';
 };
-
+var pinkTextFunction = function(match) {
+return '<span class="pinkText">' + match + '</span>';
+};
+var darkGreenTextFunction = function(match) {
+return '<span class="darkGreenText">' + match + '</span>';
+};
+var purpleTextFunction = function(match) {
+return '<span class="purpleText">' + match + '</span>';
+};
 var redTextFunction = function(match) {
   var content = match.substring(2, match.length - 2);
 
   return '<span class="redText">' + content + '</span>';
+};
+var whiteTextFunction = function(match) {
+var content = match.substring(2, match.length - 2);
+return '<span class="whiteText">' + content + '</span>';
+};
+var blackTextFunction = function(match) {
+var content = match.substring(2, match. length - 2);
+return '<span class="blackText">' + content + '</span>';
+};
+var blueTextFunction = function(match) {
+var content = match.substring(2, match.length - 2);
+return '<span class="blueText">' + content + '</span>';
+};
+var rainbowFunction = function(match) {
+var content = match.substring(5, match.length - 6);
+return '<span class="rainbow">' + content + '</span>';
+};
+var shakeFunction = function(match) {
+var content = match.substring(7, match.length - 8);
+return '<span class="shake">' + content + '</span>';
+};
+var marqueeFunction = function(match) {
+var content = match.substring(9, match.length - 10);
+return '<marquee>' + content + '<marquee>';
+};
+var rainbowAltFuntion = function(match) {
+var content = match.substring(6, match.length - 7);
+return '<span class="rainbow">' + content + '</span>';
+};
+var autismFuntion = function(match) {
+var content = match.substring(8, match.length - 9);
+return '<span class="autism">' + content + '</span';
 };
 
 var italicFunction = function(match) {
@@ -117,7 +158,14 @@ var spoilerFunction = function(match) {
 
   return '<span class="spoiler">' + content + '</span>';
 };
-
+var rainbowFunction = function(match) {
+var content = match.substring(5, match.length - 6);
+return '<span class="rainbow">' + content + '</span>';
+};
+var flashFunction = function(match) {
+var content = match.substring(7, match.length - 8);
+return '<span class="flash">' + content + '</span>';
+};
 var altSpoilerFunction = function(match) {
 
   var content = match.substring(2, match.length - 2);
@@ -151,7 +199,8 @@ exports.recordFlood = function(req) {
 
   flood.insertOne({
     ip : logger.ip(req),
-    expiration : new Date(new Date().getTime() + floodTimer)
+//    expiration : new Date(new Date().getTime() + floodTimer)
+    expiration : new Date(3000)
   }, function addedFloodRecord(error) {
     if (error) {
       if (debug) {
@@ -167,8 +216,8 @@ exports.recordFlood = function(req) {
 // Section 1: Tripcode {
 exports.generateSecureTripcode = function(name, password, parameters, cb) {
 
-  var tripcode = crypto.createHash('sha256').update(password + Math.random())
-      .digest('base64').substring(0, 6);
+  var tripcode = crypto.createHash('sha512').update(password + Math.random())
+      .digest('base64').substring(0, 12);
 
   tripcodes.insertOne({
     password : password,
@@ -199,7 +248,7 @@ exports.checkForSecureTripcode = function(name, parameters, callback) {
     } else if (!tripcode) {
       exports.generateSecureTripcode(name, password, parameters, callback);
     } else {
-      parameters.name = name + '##' + tripcode.tripcode;
+      parameters.name = name + '!!' + tripcode.tripcode;
       callback(null, parameters);
     }
 
@@ -225,10 +274,10 @@ exports.processRegularTripcode = function(name, parameters, callback) {
     return;
   }
 
-  password = crypto.createHash('sha256').update(password).digest('base64')
-      .substring(0, 6);
+  password = crypto.createHash('sha512').update(password).digest('base64')
+      .substring(0, 12);
 
-  parameters.name = name + '#' + password;
+  parameters.name = name + '!' + password;
 
   callback(null, parameters);
 };
@@ -297,7 +346,7 @@ exports.addPostToStats = function(ip, boardUri, callback) {
       callback(error);
     } else if (ip) {
 
-      var hashedIp = crypto.createHash('md5').update(ip.toString()).digest(
+      var hashedIp = crypto.createHash('sha512').update(ip.toString()).digest(
           'base64');
 
       uniqueIps.updateOne({
@@ -388,15 +437,28 @@ exports.checkBoardFileLimits = function(files, boardData, language) {
 exports.processLine = function(split, replaceCode) {
 
   split = split.replace(/^>[^\&].*/g, greenTextFunction);
+  split = split.replace(/^%[^\&].*/g, purpleTextFunction);
+  split = split.replace(/^@[^\&].*/g, pinkTextFunction);
   split = split.replace(/\=\=.+?\=\=/g, redTextFunction);
+  split = split.replace(/\+\+.+?\+\+/g, blueTextFunction);
+  split = split.replace(/\@\@.+?\@\@/g, whiteTextFunction);
+  split = split.replace(/\#\#.+?\#\#/g, blackTextFunction);
+  split = split.replace(/^![^\&].*/g, darkGreenTextFunction);
   split = split.replace(/\'\'\'.+?\'\'\'/g, boldFunction);
   split = split.replace(/\'\'.+?\'\'/g, italicFunction);
   split = split.replace(/\_\_.+?\_\_/g, underlineFunction);
   split = split.replace(/\~\~.+?\~\~/g, strikeFunction);
-  split = split.replace(/\[spoiler\].+?\[\/spoiler\]/g, spoilerFunction);
   split = split.replace(/\*\*.+?\*\*/g, altSpoilerFunction);
   split = split.replace(/\[aa\]/g, '<span class="aa">');
   split = split.replace(/\[\/aa\]/g, '</span>');
+  split = split.replace(/\[gay\].+?\[\/gay\]/g, rainbowFunction);
+  split = split.replace(/\[tbg\].+?\[\/tbg\]/g, rainbowFunction);
+  split = split.replace(/\[meme].+?\[\/meme\]/g, rainbowAltFuntion);
+  split = split.replace(/\[autism].+\[\/autism\]/g, autismFuntion);
+  split = split.replace(/\[flash].+?\[\/flash\]/g, flashFunction);
+  split = split.replace(/\[marquee\].+\[\/marquee\]/g, marqueeFunction);
+  split = split.replace(/\[shake\].+\[\/shake\]/g, shakeFunction);
+
 
   if (replaceCode) {
     split = split.replace(/\[code\]/g, '<code>');
@@ -619,7 +681,7 @@ exports.markdownText = function(message, board, replaceCode, callback) {
 exports.createId = function(salt, boardUri, ip) {
 
   if (ip) {
-    return crypto.createHash('sha256').update(salt + ip + boardUri).digest(
+    return crypto.createHash('sha512').update(salt + ip + boardUri).digest(
         'hex').substring(0, 6);
   } else {
     return null;
