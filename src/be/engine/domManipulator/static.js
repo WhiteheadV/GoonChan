@@ -552,8 +552,8 @@ exports.setEngineInfo = function(document) {
 
   var link = document.getElementById('linkEngine');
 
-  link.innerHTML = 'LynxChan ' + engineInfo.version;
-  link.href = 'http://gitgud.io/LynxChan/LynxChan';
+  link.innerHTML = 'GoonChan ' + engineInfo.version;
+  link.href = 'http://github.com/nanotech32ch/GoonChan';
 
 };
 
