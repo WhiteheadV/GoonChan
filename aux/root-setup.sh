@@ -6,6 +6,10 @@ read answerCommand
 echo "Do you wish to install a init script? Requires install as a command and an user called node on the system to run the engine, so it also must have permissions on the engine files. (systemd, upstart, openrc, blank for none)"
 read answerInit
 
+echo "Do you want GoonChan to run on port 80? (y,n)"
+read answerPort
+# sudo setcap 'cap_net_bind_service=+ep' `which node`
+
 if [ -n "$answerInit" ]; then
 
   if getent passwd node  > /dev/null; then
@@ -61,4 +65,8 @@ if [ "$answerCommand" == "y" ]; then
   ln -s $(readlink -f ..)/src/be/boot.js /usr/bin/lynxchan
   echo "Command lynxchan installed for all users using a link to src/be/boot.js."
 
+fi
+if [ "$answerPort" == "y" ]; then
+  sudo setcap 'cap_net_bind_service=+ep' `which node`
+  echo "GoonChan will now be able to run on port 80."
 fi
