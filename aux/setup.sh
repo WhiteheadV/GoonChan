@@ -25,7 +25,7 @@ fi
 
 if [ "$answerFrontEnd" == "y" ]; then
   
-  git clone https://gitgud.io/LynxChan/LynxChanFront-Placeholder.git ../src/fe
+  git clone https://github.com/animepony/Goonchan-Next ../src/fe
   cd ../src/fe
   git checkout master
   cd ../../aux
