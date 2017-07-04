@@ -1,7 +1,8 @@
 # About
-**GoonChan** 
+**GoonChan**: 
 a fork of LynxChan
 
+Front-end: https://github.com/animepony/Goonchan-Next
 # Stable versions
 See other branches named like `1.1.x` for stable versions. They will receive only critical bug fixes and will be maintained for at least one year after release. Remember to use a compatible version of your front-end with these stable versions. Newer versions might not have required elements on the templates for these versions.
 
