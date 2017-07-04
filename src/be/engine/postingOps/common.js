@@ -198,7 +198,7 @@ exports.recordFlood = function(req) {
 
   flood.insertOne({
     ip : logger.ip(req),
-    expiration : setTimeout(3000)
+    expiration : new Date(new Date().getTime() + floodTimer)
   }, function addedFloodRecord(error) {
     if (error) {
       if (debug) {
